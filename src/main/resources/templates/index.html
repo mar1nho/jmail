@@ -32,15 +32,32 @@
                     <div class="text-center">
                         <h1 class="text-white">Hello <span th:text="${user.firstName}"></span>.</h1>
                         <h2 class="text-info">Here are your J-Mail's.</h2>
+                        <div>
+                            <a href="/outra_pagina" class="text-light mr-3" title="Send new J-Mail" style="padding-right: 2rem">
+                                <i class="bi bi-envelope" style="font-size: 2em;"></i>
+                            </a>
+
+                            <a href="/outra_pagina" class="text-light" title="Exclude J-Mail">
+                                <i class="bi bi-trash" style="font-size: 2em;"></i>
+                            </a>
+                        </div>
                     </div>
 
                     <div class="list-group" th:each="email : ${emails}">
                         <a th:href="@{'/emails/'+${email.uuid}}" class="list-group-item list-group-item-action mt-1">
                             <span class="text-primary fw-bold">Sender: </span><span th:text="${email.sender.jmail}">'sender'</span>
                             <br>
-                            <span class="text-primary fw-bold">Resume: </span><span>'resume'</span>
+                            <span class="text-primary fw-bold">Resume: </span><span
+                                th:text="${email.resume}">'resume'</span>
                             <br>
-                            <span class="text-primary fw-bold">Send at: </span><span th:text="${email.time}">'date'</span>
+                            <span class="text-primary fw-bold">Received at:</span>
+                            <span th:text="${email.time.month}">'month'</span>
+                            <span th:text="${email.time.dayOfMonth}">'dayOfMonth'</span>,
+                            <span th:text="${email.time.year}">'year'</span> -
+
+                            <span th:text="${email.time.hour}">'hour'</span>:
+                            <span th:text="${email.time.minute}">'minute'</span>:
+                            <span th:text="${email.time.second}">'second'</span>
                         </a>
                     </div>
                 </div>

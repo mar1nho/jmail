@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -50,8 +53,8 @@ public class MainController {
 	}
 	
 	@RequestMapping("/emails/{id}")
-	public String _emailPage(@PathVariable("id") UUID uuid, Model model){
-		if (canAccessEmail(userService.findLoggedUser(), uuid)){
+	public String _emailPage(@PathVariable("id") UUID uuid, Model model) {
+		if (canAccessEmail(userService.findLoggedUser(), uuid)) {
 			return "email_page";
 		}
 		return "redirect:/index";
@@ -62,12 +65,12 @@ public class MainController {
 	public String login() {
 		return "login";
 	}
-
+	
 	
 	@GetMapping("/index")
-	public String index(Model model){
+	public String index(Model model) {
 		User user = userService.findLoggedUser();
-		if (user!=null){
+		if (user != null) {
 			List<Jmail> list = jmailService.entranceHomeJmails(user.getJmail());
 			model.addAttribute("emails", list);
 			model.addAttribute("user", userService.findLoggedUser());

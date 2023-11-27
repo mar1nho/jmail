@@ -46,6 +46,7 @@ public class JmailServiceImpl implements JmailService {
 		jmailRepository.save(jmail);
 	}
 	
+	
 	@Override
 	public List<Jmail> entranceHomeJmails(String jmail) {
 		Optional<User> user = Optional.ofNullable(userService.findUserByJmail(jmail));
@@ -57,10 +58,13 @@ public class JmailServiceImpl implements JmailService {
 				String decryptedContent = Encoder.decodeContent(encryptedContent);
 				jmailItem.setContent(decryptedContent);
 			}
+			receivedJmails.sort(Comparator.comparing(Jmail::getTime).reversed());
 			return receivedJmails;
 		}
-		return user.get().getReceivedEmails();
+		return Collections.emptyList();
 	}
+	
+	
 	
 	
 }

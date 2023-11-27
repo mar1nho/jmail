@@ -3,11 +3,13 @@ package net.m4rinho.spring_security_thymeleaf.models;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
@@ -24,10 +26,14 @@ public class Jmail implements Serializable {
 	
 	private String title;
 	
+	@DateTimeFormat(pattern="dd-MMM-yyyy HH:mm")
 	private LocalDateTime time;
 	
 	@Column(columnDefinition = "TEXT")
 	private String content;
+	
+	@Column(name = "resume")
+	private String resume;
 	
 	@ManyToOne
 	@JoinColumn(name = "sender_id")
@@ -39,7 +45,8 @@ public class Jmail implements Serializable {
 	
 	
 	
-	public Jmail(String title, LocalDateTime time, String content, User sender, User receiver) {
+	public Jmail(String title, String resume, LocalDateTime time, String content, User sender, User receiver) {
+		this.resume = resume;
 		this.title = title;
 		this.time = time;
 		this.content = content;
@@ -49,6 +56,14 @@ public class Jmail implements Serializable {
 	
 	public Jmail() {
 	
+	}
+	
+	public String getResume() {
+		return resume;
+	}
+	
+	public void setResume(String resume) {
+		this.resume = resume;
 	}
 	
 	public UUID getUuid() {

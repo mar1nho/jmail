@@ -16,10 +16,12 @@ public class JmailDTO {
 	private User receiver;
 	private String title;
 	private LocalDateTime time;
+	private String resume;
 	
-	public JmailDTO(String content, User sender, User receiver, String title, LocalDateTime time) {
+	public JmailDTO(String content,String resume, User sender, User receiver, String title, LocalDateTime time) {
 		this.content = content;
 		this.sender = sender;
+		this.resume = resume;
 		this.receiver = receiver;
 		this.title = title;
 		this.time = time;
@@ -30,6 +32,14 @@ public class JmailDTO {
 	
 	public JmailDTO() {
 	
+	}
+	
+	public String getResume() {
+		return resume;
+	}
+	
+	public void setResume(String resume) {
+		this.resume = resume;
 	}
 	
 	public String getContent() {

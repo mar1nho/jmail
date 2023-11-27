@@ -108,7 +108,7 @@ public class SecurityConfiguration implements WebMvcConfigurer, CommandLineRunne
 	public void run(String... args) throws Exception {
 		User sender = userService.findUserByJmail("gustavo@gmail.com");
 		User receiver = userService.findUserByJmail("pedro@gmail.com");
-		JmailDTO jmailDTO = new JmailDTO("Content", sender, receiver, "Title", LocalDateTime.now());
+		JmailDTO jmailDTO = new JmailDTO("Content","Little resume!", receiver, sender, "Title", LocalDateTime.now());
 		jmailService.sendJmail(jmailDTO);
 	}
 }
