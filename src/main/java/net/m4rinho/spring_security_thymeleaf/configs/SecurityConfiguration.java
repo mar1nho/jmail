@@ -1,6 +1,10 @@
 package net.m4rinho.spring_security_thymeleaf.configs;
 
+import net.m4rinho.spring_security_thymeleaf.jmail.dto.JmailDTO;
+import net.m4rinho.spring_security_thymeleaf.jmail.encode.Encoder;
 import net.m4rinho.spring_security_thymeleaf.jmail.services.JmailService;
+import net.m4rinho.spring_security_thymeleaf.models.Jmail;
+import net.m4rinho.spring_security_thymeleaf.models.User;
 import net.m4rinho.spring_security_thymeleaf.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -17,6 +21,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -72,8 +79,10 @@ public class SecurityConfiguration implements WebMvcConfigurer, CommandLineRunne
 		http
 				.authenticationProvider(authenticationProvider())
 				.authorizeHttpRequests((requests) -> requests
-						.requestMatchers("/", "/registration**", "/js/**", "/css/**", "/img/**","/login**").permitAll()
+						.requestMatchers("/", "/registration**", "/js/**", "/css/**", "/img/**","/login**")
+						.permitAll()
 						.anyRequest().authenticated()
+						
 				)
 				.formLogin((form) -> form
 						.defaultSuccessUrl("/index")
@@ -97,7 +106,9 @@ public class SecurityConfiguration implements WebMvcConfigurer, CommandLineRunne
 	
 	@Override
 	public void run(String... args) throws Exception {
-	
-		
+		User sender = userService.findUserByJmail("gustavo@gmail.com");
+		User receiver = userService.findUserByJmail("pedro@gmail.com");
+		JmailDTO jmailDTO = new JmailDTO("Content", sender, receiver, "Title", LocalDateTime.now());
+		jmailService.sendJmail(jmailDTO);
 	}
 }

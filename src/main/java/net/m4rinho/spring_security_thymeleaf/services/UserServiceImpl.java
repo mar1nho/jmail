@@ -1,6 +1,8 @@
 package net.m4rinho.spring_security_thymeleaf.services;
 
 import jakarta.servlet.http.HttpServletRequest;
+import net.m4rinho.spring_security_thymeleaf.jmail.services.JmailService;
+import net.m4rinho.spring_security_thymeleaf.models.Jmail;
 import net.m4rinho.spring_security_thymeleaf.models.Role;
 import net.m4rinho.spring_security_thymeleaf.models.User;
 import net.m4rinho.spring_security_thymeleaf.repositories.UserRepository;
@@ -23,11 +25,11 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
-	
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -80,5 +82,6 @@ public class UserServiceImpl implements UserService {
 	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
 		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
 	}
+	
 	
 }

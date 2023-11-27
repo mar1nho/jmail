@@ -26,6 +26,7 @@ public class Jmail implements Serializable {
 	
 	private LocalDateTime time;
 	
+	@Column(columnDefinition = "TEXT")
 	private String content;
 	
 	@ManyToOne

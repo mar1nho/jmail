@@ -1,6 +1,7 @@
 package net.m4rinho.spring_security_thymeleaf.jmail.services.impl;
 
 import net.m4rinho.spring_security_thymeleaf.jmail.dto.JmailDTO;
+import net.m4rinho.spring_security_thymeleaf.jmail.encode.Encoder;
 import net.m4rinho.spring_security_thymeleaf.jmail.repository.JmailRepository;
 import net.m4rinho.spring_security_thymeleaf.jmail.services.JmailService;
 import net.m4rinho.spring_security_thymeleaf.models.Jmail;
@@ -18,10 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class JmailServiceImpl implements JmailService {
@@ -36,9 +34,15 @@ public class JmailServiceImpl implements JmailService {
 	}
 	
 	@Override
+	public Optional<Jmail> findJmailByUUID(UUID uuid) {
+		return jmailRepository.findById(uuid);
+	}
+	
+	@Override
 	public void sendJmail(JmailDTO jmailDTO) {
 		Jmail jmail = new Jmail();
 		BeanUtils.copyProperties(jmailDTO, jmail);
+		jmail.setContent(Encoder.encodeContent(jmail.getContent()));
 		jmailRepository.save(jmail);
 	}
 	
@@ -48,9 +52,15 @@ public class JmailServiceImpl implements JmailService {
 		if (user.isPresent()){
 			User _user = user.get();
 			List<Jmail> receivedJmails = _user.getReceivedEmails();
+			for (Jmail jmailItem : receivedJmails) {
+				String encryptedContent = jmailItem.getContent();
+				String decryptedContent = Encoder.decodeContent(encryptedContent);
+				jmailItem.setContent(decryptedContent);
+			}
 			return receivedJmails;
 		}
 		return user.get().getReceivedEmails();
 	}
+	
 	
 }
