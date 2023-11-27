@@ -5,6 +5,7 @@ import net.m4rinho.spring_security_thymeleaf.models.Role;
 import net.m4rinho.spring_security_thymeleaf.models.User;
 import net.m4rinho.spring_security_thymeleaf.repositories.UserRepository;
 import net.m4rinho.spring_security_thymeleaf.web.dto.UserRegistrationDTO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
@@ -29,8 +30,7 @@ public class UserServiceImpl implements UserService {
 	
 	
 	@Autowired
-	@Lazy
-	private BCryptPasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder;
 	
 	private final UserRepository userRepository;
 	
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
 				registrationDTO.getFirstName(),
 				registrationDTO.getLastName(),
 				registrationDTO.getJmail(),
-				registrationDTO.getPassword(),
+				passwordEncoder.encode(registrationDTO.getPassword()),
 				List.of(new Role("ROLE_USER")));
 		userRepository.save(user);
 	}
@@ -71,9 +71,12 @@ public class UserServiceImpl implements UserService {
 		if (user == null) {
 			throw new UsernameNotFoundException("Invalid J-Mail or Password!");
 		}
-		return new org.springframework.security.core.userdetails.User(user.getJmail(), passwordEncoder.encode(user.getPassword()), mapRolesToAuthorities(user.getRoles()));
+		return new org.springframework.security.core.userdetails.User(
+				user.getJmail(),
+				user.getPassword(),
+				mapRolesToAuthorities(user.getRoles())
+		);
 	}
-	
 	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
 		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
 	}
