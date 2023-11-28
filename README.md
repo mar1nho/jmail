@@ -13,8 +13,10 @@
 
 ## ➖ Description ➖
 
+![img.png](img.png)
 
-J-Mail is an E-Mail System developed using Java along with various frameworks. Please note that the project is currently a work in progress and is incomplete.
+### J-Mail is an E-Mail System developed using Java. 
+#### Please note that the project is currently a work in progress and is incomplete.
 
 ## ➖ Technologies Used ➖
 </div>
