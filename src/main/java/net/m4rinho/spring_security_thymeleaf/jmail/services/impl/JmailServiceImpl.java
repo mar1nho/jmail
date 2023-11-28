@@ -5,20 +5,14 @@ import net.m4rinho.spring_security_thymeleaf.jmail.encode.Encoder;
 import net.m4rinho.spring_security_thymeleaf.jmail.repository.JmailRepository;
 import net.m4rinho.spring_security_thymeleaf.jmail.services.JmailService;
 import net.m4rinho.spring_security_thymeleaf.models.Jmail;
-import net.m4rinho.spring_security_thymeleaf.models.Role;
 import net.m4rinho.spring_security_thymeleaf.models.User;
-import net.m4rinho.spring_security_thymeleaf.repositories.UserRepository;
 import net.m4rinho.spring_security_thymeleaf.services.UserService;
-import org.hibernate.Hibernate;
+import net.m4rinho.spring_security_thymeleaf.web.dto.UserRegistrationDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.*;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -32,6 +26,7 @@ public class JmailServiceImpl implements JmailService {
 	public JmailServiceImpl(JmailRepository jmailRepository) {
 		this.jmailRepository = jmailRepository;
 	}
+	
 	
 	@Override
 	public Optional<Jmail> findJmailByUUID(UUID uuid) {
@@ -83,5 +78,22 @@ public class JmailServiceImpl implements JmailService {
 		});
 	}
 	
+	@Override
+	@Transactional
+	public void deleteAllByUserLogged() {
+		jmailRepository.deleteAllByReceiver(userService.findLoggedUser().getId());
+	}
+
+
+	
+	public boolean canAccessEmail(User user, UUID uuid) {
+		Optional<Jmail> data = jmailRepository.findById(uuid);
+		if (data.isPresent()) {
+			User receiver = data.get().getReceiver();
+			User logged = userService.findLoggedUser();
+			return receiver.equals(logged);
+		}
+		return false;
+	}
 	
 }

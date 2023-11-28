@@ -2,9 +2,6 @@ package net.m4rinho.spring_security_thymeleaf.web;
 
 import net.m4rinho.spring_security_thymeleaf.services.UserService;
 import net.m4rinho.spring_security_thymeleaf.web.dto.UserRegistrationDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/registration")
 public class UserRegistrationController {
 	
-	@Autowired
-	@Lazy
-	private BCryptPasswordEncoder passwordEncoder;
-	
-	private UserService userService;
+	private final UserService userService;
 	
 	public UserRegistrationController(UserService userService) {
 		super();
@@ -38,8 +31,10 @@ public class UserRegistrationController {
 	}
 	
 	@PostMapping
-	public String registerUserAccount(@ModelAttribute("user") UserRegistrationDTO registrationDTO, Model model) {
-		model.addAttribute("userfirstname", registrationDTO.getFirstName());
+	public String registerUserAccount(@ModelAttribute("user") UserRegistrationDTO registrationDTO) {
+		if (userService.existsByJmail(registrationDTO.getJmail())){
+			return "redirect:/registration?emails_exist";
+		}
 		userService.save(registrationDTO);
 		return "redirect:/login?registered";
 	}

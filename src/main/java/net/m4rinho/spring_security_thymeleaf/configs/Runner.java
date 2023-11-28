@@ -39,7 +39,7 @@ public class Runner implements CommandLineRunner {
 		JmailDTO jmailDTO = new JmailDTO(text,resume, receiver, sender, title, LocalDateTime.now());
 		JmailDTO jmailDTO2 = new JmailDTO(text,resume, sender, receiver, title, LocalDateTime.now());
 		
-		for (int i = 0; i < 30; i++){
+		for (int i = 0; i < 5; i++){
 			jmailService.sendJmail(jmailDTO2);
 			jmailService.sendJmail(jmailDTO);
 		}

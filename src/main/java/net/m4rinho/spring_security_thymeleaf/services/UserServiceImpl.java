@@ -1,31 +1,21 @@
 package net.m4rinho.spring_security_thymeleaf.services;
 
-import jakarta.servlet.http.HttpServletRequest;
-import net.m4rinho.spring_security_thymeleaf.jmail.services.JmailService;
-import net.m4rinho.spring_security_thymeleaf.models.Jmail;
 import net.m4rinho.spring_security_thymeleaf.models.Role;
 import net.m4rinho.spring_security_thymeleaf.models.User;
 import net.m4rinho.spring_security_thymeleaf.repositories.UserRepository;
 import net.m4rinho.spring_security_thymeleaf.web.dto.UserRegistrationDTO;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,6 +31,12 @@ public class UserServiceImpl implements UserService {
 		this.userRepository = userRepository;
 	}
 	
+	
+	@Override
+	public boolean existsByJmail(String jmail) {
+		Optional<User> data = Optional.ofNullable(userRepository.findByJmail(jmail));
+		return data.isPresent();
+	}
 	
 	@Override
 	public User findUserByJmail(String jmail) {
@@ -65,6 +61,11 @@ public class UserServiceImpl implements UserService {
 		String jmail = auth.getName();
 		Optional<User> data = Optional.ofNullable(userRepository.findByJmail(jmail));
 		return data.orElseGet(() -> new User(null, null, null, null, null));
+	}
+	
+	@Override
+	public void updateUserReceived(User user) {
+		userRepository.save(user);
 	}
 	
 	@Override

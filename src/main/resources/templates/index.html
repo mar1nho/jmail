@@ -11,32 +11,44 @@
 <body style="margin: 0; width: 100%; height: 100%; background: linear-gradient(to top, #8dbbd8 0%, #508bb5 50%, #1f5891 100%) fixed; background-size: cover;"
       sec:authorize="hasRole('ROLE_USER')">
 <nav class="navbar bg-primary" data-bs-theme="dark">
-    <div class="container-fluid">
-        <form th:action="@{/logout}" method="get">
-            <button class="btn btn-outline-light btn-lg mr-2 text-dark fw-bold" type="submit"
-                    sec:authorize="isAuthenticated()" style="border-width: 2px;">LOGOUT
-            </button>
-
+    <div class="container-fluid d-flex">
+        <form th:action="@{/logout}" method="get" class="me-auto">
+            <button class="btn btn-light btn-lg mr-2 text-dark fw-bold" type="submit" sec:authorize="isAuthenticated()" style="border-width: 2px;">LOGOUT</button>
         </form>
-        <form th:action="@{/administration}" method="get">
-            <button class="btn btn-danger btn-lg" type="submit" sec:authorize="hasRole('ROLE_ADM')">ADMINISTRATION
-            </button>
+        <form th:action="@{/administration}" method="get" class="ms-auto">
+            <button class="btn btn-danger btn-lg" type="submit" sec:authorize="hasRole('ROLE_ADM')">ADMINISTRATION</button>
         </form>
+        <div>
+            <a class="btn btn-primary btn-lg fw-bold text-light" href="/index">HOMEPAGE</a>
+        </div>
     </div>
 </nav>
+
+
+
 <div class="container">
     <div class="row justify-content-center mt-5">
         <div class="">
             <div class="row justify-content-center mt-5">
                 <div class="col-md-6">
+                    <div th:if="${param.excluded }">
+                        <div class="alert alert-success text-center">All Jmails were excluded!</div>
+                    </div>
                     <div class="text-center">
                         <h1 class="text-white">Hello <span th:text="${user.firstName}"></span>.</h1>
                         <h2 class="text-info">Here are your J-Mail's.</h2>
                         <div>
+
                             <a href="/outra_pagina" class="text-light mr-3" title="Send new J-Mail"
                                style="padding-right: 2rem">
                                 <i class="bi bi-envelope" style="font-size: 2em;"></i>
                             </a>
+
+                            <a class="text-light mr-3" title="Exclude all JMails" th:href="@{'/exclude'}"
+                               style="padding-right: 2rem">
+                                <i class="bi bi-x-octagon" style="font-size: 2em;"></i>
+                            </a>
+
                         </div>
 
                     </div>
@@ -65,7 +77,9 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
+
                         <a th:href="@{'/emails/'+${email.uuid}}" data-bs-toggle="modal"
                            th:data-bs-target="'#exampleModal-' + ${email.uuid}"
                            class="list-group-item list-group-item mt-1">
@@ -83,10 +97,15 @@
                             <span th:text="${email.time.minute}">'minute'</span>:
                             <span th:text="${email.time.second}">'second'</span>
                         </a>
-                        <a th:href="@{'/delete/'+${email.uuid}}" class="text-light" title="Exclude J-Mail" style="position: relative;">
-                            <i class="bi bi-trash text-danger" style="font-size: 2em; display: inline-block; position: absolute; top: -55px; right: 3px;"></i>
+                        <a th:href="@{'/delete/'+${email.uuid}}" class="text-light" title="Exclude J-Mail"
+                           style="position: relative;">
+                            <i class="bi bi-trash text-danger"
+                               style="font-size: 2em; display: inline-block; position: absolute; top: -55px; right: 3px;"></i>
                         </a>
 
+                    </div>
+                    <div th:if="${noemails}">
+                        <div class="alert alert-danger text-center">NO EMAILS</div>
                     </div>
                 </div>
             </div>
@@ -104,6 +123,17 @@
     <input type="password" class="form-control" name="password" required autofocus="autofocus"/>
     <button type="submit" class="btn btn-success">PRINT</button>
 </form>
+	/*
+	@RequestMapping("/emails/{id}")
+	public String _emailPage(@PathVariable("id") UUID uuid, Model model) {
+		if (canAccessEmail(userService.findLoggedUser(), uuid)) {
+			System.err.println("Yes!");
+			model.addAttribute("teste", "teste");
+			return "index";
+		}
+		return "redirect:/index";
+	}
+	*/
 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"

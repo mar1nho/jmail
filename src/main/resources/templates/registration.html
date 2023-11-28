@@ -24,10 +24,13 @@
         <div class="text-center">
             <img src="/img/logo.png" class="rounded mx-auto d-block" alt="not loaded">
         </div>
+        <!-- error message -->
         <div class="row justify-content-center mt-5">
             <div class="col-md-4">
                 <form class="center-form" th:action="@{/registration}" method="post" th:object="${user}">
-
+                    <div th:if="${param.emails_exist}">
+                        <div class="alert alert-danger text-center">Invalid J-Mail, please try another!</div>
+                    </div>
                     <div class="mb-3 text-center">
                         <label for="firstName" class="form-label text-dark fw-bold">First Name</label>
                         <input type="text" class="form-control text-center text-primary" id="firstName"
@@ -41,7 +44,7 @@
                     </div>
 
                     <div class="mb-3 text-center">
-                        <label for="jmail" class="form-label text-dark fw-bold">Email Address</label>
+                        <label for="jmail" class="form-label text-dark fw-bold"><J></J>mail Address</label>
                         <input type="email" class="form-control text-center text-primary" id="jmail"
                                placeholder="Enter J-Mail" th:field="*{jmail}" required autofocus="autofocus">
                     </div>

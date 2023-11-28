@@ -1,7 +1,6 @@
 package net.m4rinho.spring_security_thymeleaf.models;
 
 import jakarta.persistence.*;
-
 import java.io.Serial;
 import java.io.Serializable;
 
