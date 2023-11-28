@@ -24,12 +24,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration implements WebMvcConfigurer, CommandLineRunner {
+public class SecurityConfiguration implements WebMvcConfigurer {
 	
 	@Autowired
 	private  UserService userService;
@@ -104,11 +105,4 @@ public class SecurityConfiguration implements WebMvcConfigurer, CommandLineRunne
 		return http.build();
 	}
 	
-	@Override
-	public void run(String... args) throws Exception {
-		User sender = userService.findUserByJmail("gustavo@gmail.com");
-		User receiver = userService.findUserByJmail("pedro@gmail.com");
-		JmailDTO jmailDTO = new JmailDTO("Content","Little resume!", receiver, sender, "Title", LocalDateTime.now());
-		jmailService.sendJmail(jmailDTO);
-	}
 }

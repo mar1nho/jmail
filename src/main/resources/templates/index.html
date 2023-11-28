@@ -28,23 +28,47 @@
     <div class="row justify-content-center mt-5">
         <div class="">
             <div class="row justify-content-center mt-5">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="text-center">
                         <h1 class="text-white">Hello <span th:text="${user.firstName}"></span>.</h1>
                         <h2 class="text-info">Here are your J-Mail's.</h2>
                         <div>
-                            <a href="/outra_pagina" class="text-light mr-3" title="Send new J-Mail" style="padding-right: 2rem">
+                            <a href="/outra_pagina" class="text-light mr-3" title="Send new J-Mail"
+                               style="padding-right: 2rem">
                                 <i class="bi bi-envelope" style="font-size: 2em;"></i>
                             </a>
-
-                            <a href="/outra_pagina" class="text-light" title="Exclude J-Mail">
-                                <i class="bi bi-trash" style="font-size: 2em;"></i>
-                            </a>
                         </div>
-                    </div>
 
-                    <div class="list-group" th:each="email : ${emails}">
-                        <a th:href="@{'/emails/'+${email.uuid}}" class="list-group-item list-group-item-action mt-1">
+                    </div>
+                    <div class="list-group" th:each="email : ${emails}" th:id="'emailModal-' + ${email.uuid}">
+
+                        <div class="modal fade" th:id="'exampleModal-' + ${email.uuid}" tabindex="-1"
+                             aria-labelledby="'exampleModalLabel-' + ${email.uuid}"
+                             aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-2 text-success " id="exampleModalLabel"
+                                            th:text="${email.title}">Title</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <span class="text-primary"><i class="bi bi-arrow-right-circle-fill">  </i><span
+                                            class="modal-title fs-5" id="exampleModalLabel2" th:text="${email.resume}">Resume</span></span>
+                                    <div class="modal-body">
+                                        <span th:text="${email.content}" class="text-dark"></span>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                                        </button>
+                                        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a th:href="@{'/emails/'+${email.uuid}}" data-bs-toggle="modal"
+                           th:data-bs-target="'#exampleModal-' + ${email.uuid}"
+                           class="list-group-item list-group-item mt-1">
                             <span class="text-primary fw-bold">Sender: </span><span th:text="${email.sender.jmail}">'sender'</span>
                             <br>
                             <span class="text-primary fw-bold">Resume: </span><span
@@ -59,13 +83,16 @@
                             <span th:text="${email.time.minute}">'minute'</span>:
                             <span th:text="${email.time.second}">'second'</span>
                         </a>
+                        <a th:href="@{'/delete/'+${email.uuid}}" class="text-light" title="Exclude J-Mail" style="position: relative;">
+                            <i class="bi bi-trash text-danger" style="font-size: 2em; display: inline-block; position: absolute; top: -55px; right: 3px;"></i>
+                        </a>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 <!--
 <div class="container">
     <span sec:authentication="principal.username"> User</span>

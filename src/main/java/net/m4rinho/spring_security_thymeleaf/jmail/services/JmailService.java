@@ -18,4 +18,5 @@ public interface JmailService  {
 	Optional<Jmail> findJmailByUUID(UUID uuid);
 	void sendJmail(JmailDTO jmailDTO);
 	List<Jmail> entranceHomeJmails(String jmail);
+	void deleteJmailByUUID(UUID uuid);
 }

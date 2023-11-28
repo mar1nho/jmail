@@ -49,22 +49,39 @@ public class JmailServiceImpl implements JmailService {
 	
 	@Override
 	public List<Jmail> entranceHomeJmails(String jmail) {
-		Optional<User> user = Optional.ofNullable(userService.findUserByJmail(jmail));
-		if (user.isPresent()){
-			User _user = user.get();
-			List<Jmail> receivedJmails = _user.getReceivedEmails();
-			for (Jmail jmailItem : receivedJmails) {
-				String encryptedContent = jmailItem.getContent();
-				String decryptedContent = Encoder.decodeContent(encryptedContent);
+		User user = userService.findUserByJmail(jmail);
+		if (user != null) {
+			List<Jmail> receivedJmails = user.getReceivedEmails();
+			receivedJmails.forEach(jmailItem -> {
+				String decryptedContent = Encoder.decodeContent(jmailItem.getContent());
 				jmailItem.setContent(decryptedContent);
-			}
+			});
 			receivedJmails.sort(Comparator.comparing(Jmail::getTime).reversed());
 			return receivedJmails;
 		}
 		return Collections.emptyList();
 	}
 	
-	
+	@Override
+	public void deleteJmailByUUID(UUID uuid) {
+		Optional<Jmail> optionalJmail = jmailRepository.findById(uuid);
+		optionalJmail.ifPresent(jmail -> {
+			User sender = jmail.getSender();
+			if (sender != null) {
+				sender.getSentEmails().remove(jmail);
+			}
+			
+			User receiver = jmail.getReceiver();
+			if (receiver != null) {
+				receiver.getReceivedEmails().remove(jmail);
+			}
+			
+			jmail.setSender(null);
+			jmail.setReceiver(null);
+			
+			jmailRepository.delete(jmail);
+		});
+	}
 	
 	
 }

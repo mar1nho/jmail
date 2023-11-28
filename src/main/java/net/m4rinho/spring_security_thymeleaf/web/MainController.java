@@ -52,12 +52,25 @@ public class MainController {
 		return false;
 	}
 	
+	/*
 	@RequestMapping("/emails/{id}")
 	public String _emailPage(@PathVariable("id") UUID uuid, Model model) {
 		if (canAccessEmail(userService.findLoggedUser(), uuid)) {
-			return "email_page";
+			System.err.println("Yes!");
+			model.addAttribute("teste", "teste");
+			return "index";
 		}
 		return "redirect:/index";
+	}
+	*/
+	
+	@RequestMapping("/delete/{id}")
+	public String _emailPage(@PathVariable("id") UUID uuid, Model model) {
+		System.err.println(uuid);
+		jmailService.deleteJmailByUUID(uuid);
+		return "redirect:/index";
+		
+		
 	}
 	
 	
