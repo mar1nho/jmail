@@ -34,6 +34,7 @@ public class JmailServiceImpl implements JmailService {
 	}
 	
 	@Override
+	@Transactional
 	public void sendJmail(JmailDTO jmailDTO) {
 		Jmail jmail = new Jmail();
 		BeanUtils.copyProperties(jmailDTO, jmail);
@@ -58,6 +59,7 @@ public class JmailServiceImpl implements JmailService {
 	}
 	
 	@Override
+	@Transactional
 	public void deleteJmailByUUID(UUID uuid) {
 		Optional<Jmail> optionalJmail = jmailRepository.findById(uuid);
 		optionalJmail.ifPresent(jmail -> {

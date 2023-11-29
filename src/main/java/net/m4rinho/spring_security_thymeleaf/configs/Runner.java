@@ -2,6 +2,7 @@ package net.m4rinho.spring_security_thymeleaf.configs;
 
 import net.m4rinho.spring_security_thymeleaf.jmail.dto.JmailDTO;
 import net.m4rinho.spring_security_thymeleaf.jmail.services.JmailService;
+import net.m4rinho.spring_security_thymeleaf.models.Jmail;
 import net.m4rinho.spring_security_thymeleaf.models.User;
 import net.m4rinho.spring_security_thymeleaf.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Configuration
 public class Runner implements CommandLineRunner {
@@ -39,7 +41,7 @@ public class Runner implements CommandLineRunner {
 		JmailDTO jmailDTO = new JmailDTO(text,resume, receiver, sender, title, LocalDateTime.now());
 		JmailDTO jmailDTO2 = new JmailDTO(text,resume, sender, receiver, title, LocalDateTime.now());
 		
-		for (int i = 0; i < 5; i++){
+		for (int i = 0; i < 10; i++){
 			jmailService.sendJmail(jmailDTO2);
 			jmailService.sendJmail(jmailDTO);
 		}

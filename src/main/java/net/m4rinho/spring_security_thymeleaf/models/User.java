@@ -1,6 +1,8 @@
 package net.m4rinho.spring_security_thymeleaf.models;
 
 import jakarta.persistence.*;
+import net.m4rinho.spring_security_thymeleaf.web.dto.UserRegistrationDTO;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
@@ -47,6 +49,14 @@ public class User implements Serializable {
 		this.jmail = jmail;
 		this.password = password;
 		this.roles = roles;
+	}
+	
+	public User(UserRegistrationDTO dto) {
+		this.firstName = dto.getFirstName();
+		this.lastName = dto.getLastName();
+		this.jmail = dto.getJmail();
+		this.password = dto.getPassword();
+		this.roles = List.of(new Role("ROLE_USER"));
 	}
 	
 	public User() {

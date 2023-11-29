@@ -1,6 +1,7 @@
 package net.m4rinho.spring_security_thymeleaf.models;
 
 import jakarta.persistence.*;
+import net.m4rinho.spring_security_thymeleaf.jmail.dto.JmailDTO;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serial;
 import java.io.Serializable;
@@ -47,6 +48,15 @@ public class Jmail implements Serializable {
 		this.content = content;
 		this.sender = sender;
 		this.receiver = receiver;
+	}
+	
+	public Jmail(JmailDTO jmailDTO) {
+		this.resume = jmailDTO.getResume();
+		this.title = jmailDTO.getTitle();
+		this.time = jmailDTO.getTime();
+		this.content = jmailDTO.getContent();
+		this.sender = jmailDTO.getSender();
+		this.receiver = jmailDTO.getReceiver();
 	}
 	
 	public Jmail() {

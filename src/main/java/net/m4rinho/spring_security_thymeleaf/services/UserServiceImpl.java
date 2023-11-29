@@ -64,11 +64,6 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public void updateUserReceived(User user) {
-		userRepository.save(user);
-	}
-	
-	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findByJmail(username);
 		if (user == null) {

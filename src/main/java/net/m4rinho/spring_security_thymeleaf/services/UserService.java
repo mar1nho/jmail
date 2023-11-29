@@ -11,5 +11,4 @@ public interface UserService extends UserDetailsService {
 	User findUserByJmail(String jmail);
 	void save(UserRegistrationDTO registrationDTO);
 	User findLoggedUser();
-	void updateUserReceived(User user);
 }
