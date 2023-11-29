@@ -39,6 +39,8 @@
     - Thymeleaf allows for the creation of reusable layouts and fragments, enhancing code maintainability.
 
 
+- ➡ **TESTS:** JUnit, Mockito, JAssert, H2DB.
+
 <div align="center"> 
 
 ##  ➖ Installation and Configuration ➖
